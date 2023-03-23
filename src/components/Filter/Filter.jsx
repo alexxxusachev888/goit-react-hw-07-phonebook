@@ -1,7 +1,7 @@
 import { Input, Label } from './Filter.styled';
 import { useDispatch, useSelector } from "react-redux";
-import { filterContacts } from '../../redux/filterSlice';
-import { getFilter } from '../../redux/filterSlice';
+import { searchContact } from '../../redux/contactsSlice';
+import { getFilter } from '../../redux/selectors';
 
 export function Filter() { 
     const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export function Filter() {
             <Input 
             type="text" 
             value={filter} 
-            onChange={(evt)=> dispatch(filterContacts(evt.target.value))}>
+            onChange={(evt)=> dispatch(searchContact(evt.target.value))}>
             </Input>
         </Label>
         

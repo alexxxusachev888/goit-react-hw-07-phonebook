@@ -1,14 +1,32 @@
-import { useDispatch } from "react-redux";
-import { addContact } from '../../redux/contactsSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+import { addContact } from '../../redux/operations';
 import { Form, Label, Input, Button } from './ContactsForm.styled';
+import { getContacts } from '../../redux/selectors';
+import { toast } from 'react-toastify';
 
 export function ContactForm () {
     const dispatch = useDispatch();
+    const currentContacts = useSelector(getContacts)
 
     const handleSubmitForm = (evt) => {
         evt.preventDefault();
         const form = evt.target.elements;
-        dispatch(addContact(form.name.value, form.number.value))
+        const isDuplicate = () => {
+            return currentContacts.some(({contact}) => contact.name === form.name.value);
+        }
+
+        const newContact = {
+            id: nanoid(),
+            name: form.name.value,
+            number: form.number.value,
+          }        
+
+        if(!isDuplicate()) {
+            dispatch(addContact(newContact))
+        } else {
+            toast.warn('That contact is on the list!')
+        }
         evt.target.reset();
     }
 
